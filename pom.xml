@@ -85,6 +85,10 @@
             <version>${org.mapstruct.version}</version>
             <scope>provided</scope> <!-- Добавлено -->
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
