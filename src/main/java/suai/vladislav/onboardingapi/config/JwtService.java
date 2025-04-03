@@ -1,5 +1,6 @@
 package suai.vladislav.onboardingapi.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,7 +18,9 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "50CED81830B70E8212A4FE9A70CD1313AFE8882853F84B3D2D2B8CBD9B8A2B0B";
+    private static Dotenv dotenv = Dotenv.load();
+
+    private static final String SECRET_KEY = dotenv.get("SECRET_KEY");
 
     public String extractUsername(String token) {
         return extractClaim(token,Claims::getSubject);

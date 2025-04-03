@@ -36,3 +36,4 @@ build/
 .gitattributes
 .mvn
 mvn*
+.env
