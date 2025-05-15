@@ -41,9 +41,8 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public ScoreboardDto getScoreboardById(Long id) {
         log.info("вызван getScoreboardById id = {}", id);
 
-        return scoreboardMapper.toDto(scoreboardRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id))
-        );
+        return scoreboardMapper.toDto(scoreboardRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id)));
     }
 
     @Override
@@ -51,9 +50,8 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public ScoreboardDto addScoreboard(ScoreboardDto scoreboardDto) {
         log.info("вызван addScoreboard");
 
-        User user = userRepository.findById(scoreboardDto.userId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId())
-        );
+        User user = userRepository.findById(scoreboardDto.userId())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId()));
 
         Scoreboard scoreboard = scoreboardMapper.toModel(scoreboardDto);
 
@@ -73,13 +71,11 @@ public class ScoreboardServiceImpl implements ScoreboardService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Scoreboard scoreboard = scoreboardRepository.findById(scoreboardDto.id()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, scoreboardDto.id())
-        );
+        Scoreboard scoreboard = scoreboardRepository.findById(scoreboardDto.id())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, scoreboardDto.id()));
 
-        User user = userRepository.findById(scoreboardDto.userId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId())
-        );
+        User user = userRepository.findById(scoreboardDto.userId())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId()));
 
         scoreboard.setScore(scoreboardDto.score());
         scoreboard.setUser(user);
@@ -94,9 +90,8 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public void deleteScoreboard(Long id) {
         log.info("вызван deleteScoreboard");
 
-        Scoreboard scoreboard = scoreboardRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id)
-        );
+        Scoreboard scoreboard = scoreboardRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id));
 
         scoreboardRepository.delete(scoreboard);
     }

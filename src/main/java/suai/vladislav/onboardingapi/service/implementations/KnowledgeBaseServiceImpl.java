@@ -37,9 +37,8 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public KnowledgeBaseDto getKnowledgeBaseById(Long id) {
         log.info("вызван getKnowledgeBaseById, id = {}", id);
 
-        return knowledgeBaseMapper.toDto(knowledgeBaseRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id))
-        );
+        return knowledgeBaseMapper.toDto(knowledgeBaseRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id)));
     }
 
     @Override
@@ -57,9 +56,10 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public KnowledgeBaseDto updateKnowledgeBase(KnowledgeBaseDto knowledgeBaseDto) {
         log.info("вызван updateKnowledgeBase");
 
-        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(knowledgeBaseDto.id()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, knowledgeBaseDto.id())
-        );
+        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(knowledgeBaseDto.id())
+            .orElseThrow(
+                () -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, knowledgeBaseDto.id())
+            );
 
         knowledgeBase.setName(knowledgeBaseDto.name());
         knowledgeBase.setContent(knowledgeBaseDto.content());
@@ -74,9 +74,8 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public void deleteKnowledgeBase(Long id) {
         log.info("вызван deleteKnowledgeBase");
 
-        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id)
-        );
+        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id));
 
         knowledgeBaseRepository.delete(knowledgeBase);
     }

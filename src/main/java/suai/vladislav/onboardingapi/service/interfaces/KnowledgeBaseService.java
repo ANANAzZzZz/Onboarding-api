@@ -6,6 +6,7 @@ import suai.vladislav.onboardingapi.model.KnowledgeBase;
 import java.util.List;
 
 public interface KnowledgeBaseService {
+
     List<KnowledgeBaseDto> getKnowledgeBases();
 
     KnowledgeBaseDto getKnowledgeBaseById(Long id);

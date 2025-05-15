@@ -30,9 +30,8 @@ public class SurveyXUsersServiceImpl implements SurveyXUserService {
     public List<SecureUserDto> getUsersForSurvey(Long surveyId) {
         log.info("вызван getUsersForSurvey");
 
-        Survey survey = surveyRepository.findById(surveyId).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId)
-        );
+        Survey survey = surveyRepository.findById(surveyId)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId));
 
         return survey.getUsers()
             .stream()
@@ -55,13 +54,11 @@ public class SurveyXUsersServiceImpl implements SurveyXUserService {
     public SurveyXUserDto addUserToSurvey(Long surveyId, Long userId) {
         log.info("вызван addUserToSurvey");
 
-        Survey survey = surveyRepository.findById(surveyId).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId)
-        );
+        Survey survey = surveyRepository.findById(surveyId)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId));
 
-        User user = userRepository.findById(userId).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, userId)
-        );
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, userId));
 
         survey.assignUser(user);
         surveyRepository.save(survey);
@@ -78,13 +75,11 @@ public class SurveyXUsersServiceImpl implements SurveyXUserService {
     public void deleteUserFromSurvey(Long surveyId, Long userId) {
         log.info("вызван deleteUserFromSurvey");
 
-        Survey survey = surveyRepository.findById(surveyId).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId)
-        );
+        Survey survey = surveyRepository.findById(surveyId)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.SURVEY_NOT_FOUND, surveyId));
 
-        User user = userRepository.findById(userId).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, userId)
-        );
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, userId));
 
         survey.removeUser(user);
         surveyRepository.save(survey);

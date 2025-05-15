@@ -41,9 +41,8 @@ public class PageServiceImpl implements PageService {
     public PageDto getPageById(Long id) {
         log.info("вызван getPageById, id = {}", id);
 
-        return pageMapper.toDto(pageRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id))
-        );
+        return pageMapper.toDto(pageRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id)));
     }
 
     @Override
@@ -51,9 +50,8 @@ public class PageServiceImpl implements PageService {
     public PageDto addPage(PageDto pageDto) {
         log.info("вызван addPage");
 
-        Module module = moduleRepository.findById(pageDto.moduleId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId())
-        );
+        Module module = moduleRepository.findById(pageDto.moduleId())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId()));
 
         Page page = pageMapper.toModel(pageDto);
         page.setModule(module);
@@ -73,13 +71,11 @@ public class PageServiceImpl implements PageService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Page page = pageRepository.findById(pageDto.id()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, pageDto.id())
-        );
+        Page page = pageRepository.findById(pageDto.id())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, pageDto.id()));
 
-        Module module = moduleRepository.findById(pageDto.moduleId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId())
-        );
+        Module module = moduleRepository.findById(pageDto.moduleId())
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId()));
 
         page.setName(pageDto.name());
         page.setContent(pageDto.content());
@@ -94,9 +90,8 @@ public class PageServiceImpl implements PageService {
     @Override
     @Transactional
     public void deletePage(Long id) {
-        Page page = pageRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id)
-        );
+        Page page = pageRepository.findById(id)
+            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id));
 
         pageRepository.delete(page);
     }
