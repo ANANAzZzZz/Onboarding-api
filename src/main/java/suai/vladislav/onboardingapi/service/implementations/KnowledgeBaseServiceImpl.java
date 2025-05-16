@@ -10,6 +10,7 @@ import suai.vladislav.onboardingapi.exception.CommonOnboardingApiException;
 import suai.vladislav.onboardingapi.mapper.KnowledgeBaseMapper;
 import suai.vladislav.onboardingapi.model.KnowledgeBase;
 import suai.vladislav.onboardingapi.repository.KnowledgeBaseRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.KnowledgeBaseService;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
 
     private final KnowledgeBaseMapper knowledgeBaseMapper;
 
+    private final EntityFinderService entityFinderService;
+
     @Override
     public List<KnowledgeBaseDto> getKnowledgeBases() {
         log.info("вызван getKnowledgeBases");
@@ -37,8 +40,7 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public KnowledgeBaseDto getKnowledgeBaseById(Long id) {
         log.info("вызван getKnowledgeBaseById, id = {}", id);
 
-        return knowledgeBaseMapper.toDto(knowledgeBaseRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id)));
+        return knowledgeBaseMapper.toDto(entityFinderService.getKnowledgeBaseOrThrow(id));
     }
 
     @Override
@@ -56,10 +58,7 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public KnowledgeBaseDto updateKnowledgeBase(KnowledgeBaseDto knowledgeBaseDto) {
         log.info("вызван updateKnowledgeBase");
 
-        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(knowledgeBaseDto.id())
-            .orElseThrow(
-                () -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, knowledgeBaseDto.id())
-            );
+        KnowledgeBase knowledgeBase = entityFinderService.getKnowledgeBaseOrThrow(knowledgeBaseDto.id());
 
         knowledgeBase.setName(knowledgeBaseDto.name());
         knowledgeBase.setContent(knowledgeBaseDto.content());
@@ -74,8 +73,7 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public void deleteKnowledgeBase(Long id) {
         log.info("вызван deleteKnowledgeBase");
 
-        KnowledgeBase knowledgeBase = knowledgeBaseRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.KNOWLEDGE_BASE_NOT_FOUND, id));
+        KnowledgeBase knowledgeBase = entityFinderService.getKnowledgeBaseOrThrow(id);
 
         knowledgeBaseRepository.delete(knowledgeBase);
     }

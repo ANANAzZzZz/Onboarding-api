@@ -10,6 +10,7 @@ import suai.vladislav.onboardingapi.exception.CommonOnboardingApiException;
 import suai.vladislav.onboardingapi.mapper.TrackMapper;
 import suai.vladislav.onboardingapi.model.Track;
 import suai.vladislav.onboardingapi.repository.TrackRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.TrackService;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class TrackServiceImpl implements TrackService {
 
     private final TrackMapper trackMapper;
 
+    private final EntityFinderService entityFinderService;
+
     @Override
     public List<TrackDto> getTracks() {
         log.info("вызван getTracks");
@@ -37,8 +40,7 @@ public class TrackServiceImpl implements TrackService {
     public TrackDto getTrackById(Long id) {
         log.info("вызван getTrackById id = {}", id);
 
-        return trackMapper.toDto(trackRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.TRACK_NOT_FOUND, id)));
+        return trackMapper.toDto(entityFinderService.getTrackOrThrow(id));
     }
 
     @Override
@@ -60,8 +62,7 @@ public class TrackServiceImpl implements TrackService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Track track = trackRepository.findById(trackDto.id())
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.TRACK_NOT_FOUND, trackDto.id()));
+        Track track = entityFinderService.getTrackOrThrow(trackDto.id());
 
         track.setName(trackDto.name());
         trackRepository.save(track);
@@ -74,8 +75,7 @@ public class TrackServiceImpl implements TrackService {
     public void deleteTrack(Long id) {
         log.info("вызван deleteTrack");
 
-        Track track = trackRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.TRACK_NOT_FOUND, id));
+        Track track = entityFinderService.getTrackOrThrow(id);
 
         trackRepository.delete(track);
     }

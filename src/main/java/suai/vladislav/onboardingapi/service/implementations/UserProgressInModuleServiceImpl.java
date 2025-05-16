@@ -11,9 +11,8 @@ import suai.vladislav.onboardingapi.mapper.UserProgressInModuleMapper;
 import suai.vladislav.onboardingapi.model.Module;
 import suai.vladislav.onboardingapi.model.User;
 import suai.vladislav.onboardingapi.model.UserProgressInModule;
-import suai.vladislav.onboardingapi.repository.ModuleRepository;
 import suai.vladislav.onboardingapi.repository.UserProgressInModuleRepository;
-import suai.vladislav.onboardingapi.repository.UserRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.UserProgressInModuleService;
 
 import java.util.List;
@@ -28,9 +27,7 @@ public class UserProgressInModuleServiceImpl implements UserProgressInModuleServ
 
     private final UserProgressInModuleMapper userProgressInModuleMapper;
 
-    private final UserRepository userRepository;
-
-    private final ModuleRepository moduleRepository;
+    private final EntityFinderService entityFinderService;
 
     @Override
     public List<UserProgressInModuleDto> getUserProgressInModule() {
@@ -45,8 +42,7 @@ public class UserProgressInModuleServiceImpl implements UserProgressInModuleServ
     public UserProgressInModuleDto getUserProgressInModuleById(Long id) {
         log.info("вызван getUserProgressInModuleById id = {}", id);
 
-        return userProgressInModuleMapper.toDto(userProgressInModuleRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_PROGRESS_IN_MODULE_NOT_FOUND, id)));
+        return userProgressInModuleMapper.toDto(entityFinderService.getUserProgressInModuleOrThrow(id));
     }
 
     @Override
@@ -54,17 +50,8 @@ public class UserProgressInModuleServiceImpl implements UserProgressInModuleServ
     public UserProgressInModuleDto addUserProgressInModule(UserProgressInModuleDto userProgressInModuleDto) {
         log.info("вызван addUserProgressInModule id = {}", userProgressInModuleDto.id());
 
-        User user = userRepository.findById(userProgressInModuleDto.userId())
-            .orElseThrow(
-                () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, userProgressInModuleDto.userId()
-                )
-            );
-
-        Module module = moduleRepository.findById(userProgressInModuleDto.moduleId())
-            .orElseThrow(
-                () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, userProgressInModuleDto.moduleId()
-                )
-            );
+        User user = entityFinderService.getUserOrThrow(userProgressInModuleDto.userId());
+        Module module = entityFinderService.getModuleOrThrow(userProgressInModuleDto.moduleId());
 
         UserProgressInModule userProgressInModule = userProgressInModuleMapper.toModel(userProgressInModuleDto);
 
@@ -85,22 +72,11 @@ public class UserProgressInModuleServiceImpl implements UserProgressInModuleServ
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        UserProgressInModule userProgressInModule = userProgressInModuleRepository.findById(userProgressInModuleDto.id())
-            .orElseThrow(
-                () -> new CommonOnboardingApiException(
-                    ErrorType.USER_PROGRESS_IN_MODULE_NOT_FOUND, userProgressInModuleDto.id()
-                )
-            );
+        UserProgressInModule userProgressInModule = entityFinderService.getUserProgressInModuleOrThrow(userProgressInModuleDto.id());
 
-        User user = userRepository.findById(userProgressInModuleDto.userId())
-            .orElseThrow(() -> new CommonOnboardingApiException(
-                ErrorType.USER_NOT_FOUND, userProgressInModuleDto.userId())
-            );
+        User user = entityFinderService.getUserOrThrow(userProgressInModuleDto.userId());
 
-        Module module = moduleRepository.findById(userProgressInModuleDto.moduleId())
-            .orElseThrow(
-                () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, userProgressInModuleDto.moduleId())
-            );
+        Module module = entityFinderService.getModuleOrThrow(userProgressInModuleDto.moduleId());
 
         userProgressInModule.setUser(user);
         userProgressInModule.setModule(module);
@@ -117,8 +93,7 @@ public class UserProgressInModuleServiceImpl implements UserProgressInModuleServ
     public void deleteUserProgressInModule(Long id) {
         log.info("вызван deleteUserProgressInModule, id = {}", id);
 
-        UserProgressInModule userProgressInModule = userProgressInModuleRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.USER_PROGRESS_IN_MODULE_NOT_FOUND, id));
+        UserProgressInModule userProgressInModule = entityFinderService.getUserProgressInModuleOrThrow(id);
 
         userProgressInModuleRepository.delete(userProgressInModule);
     }

@@ -10,8 +10,8 @@ import suai.vladislav.onboardingapi.exception.CommonOnboardingApiException;
 import suai.vladislav.onboardingapi.mapper.PageMapper;
 import suai.vladislav.onboardingapi.model.Module;
 import suai.vladislav.onboardingapi.model.Page;
-import suai.vladislav.onboardingapi.repository.ModuleRepository;
 import suai.vladislav.onboardingapi.repository.PageRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.PageService;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public class PageServiceImpl implements PageService {
 
     private final PageRepository pageRepository;
 
-    private final ModuleRepository moduleRepository;
-
     private final PageMapper pageMapper;
+
+    private final EntityFinderService entityFinderService;
 
     @Override
     public List<PageDto> getPages() {
@@ -41,8 +41,7 @@ public class PageServiceImpl implements PageService {
     public PageDto getPageById(Long id) {
         log.info("вызван getPageById, id = {}", id);
 
-        return pageMapper.toDto(pageRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id)));
+        return pageMapper.toDto(entityFinderService.getPageOrThrow(id));
     }
 
     @Override
@@ -50,10 +49,9 @@ public class PageServiceImpl implements PageService {
     public PageDto addPage(PageDto pageDto) {
         log.info("вызван addPage");
 
-        Module module = moduleRepository.findById(pageDto.moduleId())
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId()));
-
+        Module module = entityFinderService.getModuleOrThrow(pageDto.moduleId());
         Page page = pageMapper.toModel(pageDto);
+
         page.setModule(module);
 
         return pageMapper.toDto(
@@ -71,11 +69,8 @@ public class PageServiceImpl implements PageService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Page page = pageRepository.findById(pageDto.id())
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, pageDto.id()));
-
-        Module module = moduleRepository.findById(pageDto.moduleId())
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, pageDto.moduleId()));
+        Page page = entityFinderService.getPageOrThrow(pageDto.id());
+        Module module = entityFinderService.getModuleOrThrow(pageDto.moduleId());
 
         page.setName(pageDto.name());
         page.setContent(pageDto.content());
@@ -90,8 +85,7 @@ public class PageServiceImpl implements PageService {
     @Override
     @Transactional
     public void deletePage(Long id) {
-        Page page = pageRepository.findById(id)
-            .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id));
+        Page page = entityFinderService.getPageOrThrow(id);
 
         pageRepository.delete(page);
     }
