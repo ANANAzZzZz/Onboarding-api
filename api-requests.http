@@ -21,17 +21,57 @@ Content-Type: application/json
 
 ### ----- AUTH TOKEN -----
 
-@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDcxNDY3MzQsImV4cCI6MTc0NzE0ODE3NH0.molZdpaldREBEzSGyVtTVsD0Bqe0CZGCqfTW9lmA6T4
+@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDczOTgzMjksImV4cCI6MTc0NzM5OTc2OX0.0HUT9TyXmVsPrrvJIZrnmSXPVK1Hji1ZRWDIjSkJjXs
+
+### GET ALL PAGES
+GET http://localhost:8080/api/v1/page
+Authorization: {{authToken}}
+
+
+### GET PAGE BY ID
+GET http://localhost:8080/api/v1/page/1
+Authorization: {{authToken}}
+
+
+### ADD PAGE
+POST http://localhost:8080/api/v1/page
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "orderInModule": 1,
+  "name": "top page",
+  "moduleId": 3,
+  "content": "<html>"
+}
+
+
+### UPDATE PAGE
+PUT http://localhost:8080/api/v1/page
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "orderInModule": 1,
+  "name": "top page updated",
+  "moduleId": 1,
+  "content": "<html> updated"
+}
+
+
+### DELETE PAGE
+DELETE http://localhost:8080/api/v1/page/1
+Authorization: {{authToken}}
+
 
 ### GET ALL SCOREBOARDS
-
-
 GET http://localhost:8080/api/v1/scoreboard
 Authorization: {{authToken}}
 
 
 ### GET SCOREBOARD BY ID
-GET http://localhost:8080/api/v1/scoreboard/2
+GET http://localhost:8080/api/v1/scoreboard/1
 Authorization: {{authToken}}
 
 
@@ -42,7 +82,7 @@ Authorization: {{authToken}}
 
 {
   "score": 22212,
-  "userId": 2
+  "userId": 1
 }
 
 
@@ -52,14 +92,14 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": 2,
-  "userId": 3,
+  "id": 1,
+  "userId": 1,
   "score": 99999
 }
 
 
 ### DELETE SCOREBOARD BY ID
-DELETE http://localhost:8080/api/v1/scoreboard/4
+DELETE http://localhost:8080/api/v1/scoreboard/1
 Authorization: {{authToken}}
 
 
@@ -90,14 +130,14 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": 1,
+  "id": 3,
   "name": "testKnowledgeBase Updated",
   "content": "some html content Updated"
 }
 
 
 ### DELETE KNOWLEDGEBASE BY ID
-DELETE http://localhost:8080/api/v1/knowledgebase/1
+DELETE http://localhost:8080/api/v1/knowledgebase/3
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -129,14 +169,14 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id" : 5,
+  "id" : 6,
   "name": "top Survey updated",
   "content": "top survey content updated"
 }
 
 
 ### DELETE SURVEY
-DELETE http://localhost:8080/api/v1/survey/5
+DELETE http://localhost:8080/api/v1/survey/6
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -153,4 +193,116 @@ Authorization: {{authToken}}
 
 ### DELETE USER FROM SURVEY
 DELETE http://localhost:8080/api/v1/surveys/2/users/1
+Authorization: {{authToken}}
+
+
+### GET ALL USERS-PROGRESES-IN-MODULES
+GET http://localhost:8080/api/v1/user-progress-in-module
+Authorization: {{authToken}}
+
+### GET USER-PROGRESS-IN-MODULE BY ID
+GET http://localhost:8080/api/v1/user-progress-in-module/4
+Authorization: {{authToken}}
+
+
+### ADD USER-PROGRESS-IN-MODULE
+POST http://localhost:8080/api/v1/user-progress-in-module
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "userId": 1,
+  "moduleId": 1,
+  "lastCompletedPageNumber": 3,
+  "name": "progress test test"
+}
+
+
+### UPDATE USER-PROGRESS-IN-MODULE
+PUT http://localhost:8080/api/v1/user-progress-in-module
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 5,
+  "userId": 1,
+  "moduleId": 1,
+  "lastCompletedPageNumber": 2,
+  "name": "progress update"
+}
+
+
+### DELTE USER-PROGRESS-IN-MODULE
+DELETE http://localhost:8080/api/v1/user-progress-in-module/5
+Authorization: {{authToken}}
+
+
+### GET ALL MODULES
+GET http://localhost:8080/api/v1/module
+Content-Type: application/json
+Authorization: {{authToken}}
+
+
+### GET MODULE BY ID
+GET http://localhost:8080/api/v1/module/1
+Authorization: {{authToken}}
+
+### ADD MODULE
+POST http://localhost:8080/api/v1/module
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "name": "top module",
+  "startContent": "<html>",
+  "endContent": "<html>",
+  "orderInTrack": 1,
+  "trackId": 1,
+  "pagesCount": 10
+}
+
+
+### UPDATE MODULE
+PUT http://localhost:8080/api/v1/module
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 2,
+  "name": "top module",
+  "startContent": "<html> updated",
+  "endContent": "<html> updated",
+  "orderInTrack": 3,
+  "trackId": 1
+}
+
+### GET ALL TRACKS
+GET http://localhost:8080/api/v1/track
+Content-Type: application/json
+Authorization: {{authToken}}
+
+
+### ADD TRACK
+POST http://localhost:8080/api/v1/track
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "name": "top track"
+}
+
+
+### UPDATE TRACK
+PUT http://localhost:8080/api/v1/track
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 1,
+  "name": "top track update"
+}
+
+
+### DELETE TRACK
+DELETE http://localhost:8080/api/v1/track/3
 Authorization: {{authToken}}

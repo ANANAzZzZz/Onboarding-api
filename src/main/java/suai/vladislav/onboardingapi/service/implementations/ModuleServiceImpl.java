@@ -11,7 +11,7 @@ import suai.vladislav.onboardingapi.mapper.ModuleMapper;
 import suai.vladislav.onboardingapi.model.Module;
 import suai.vladislav.onboardingapi.model.Track;
 import suai.vladislav.onboardingapi.repository.ModuleRepository;
-import suai.vladislav.onboardingapi.repository.TrackRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.ModuleService;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class ModuleServiceImpl implements ModuleService {
 
     private final ModuleRepository moduleRepository;
 
-    private final TrackRepository trackRepository;
+    private final EntityFinderService entityFinderService;
 
     @Override
     public List<ModuleDto> getModules() {
@@ -41,9 +41,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleDto getModuleById(Long id) {
         log.info("вызван getModuleById, id = {}", id);
 
-        return moduleMapper.toDto(moduleRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, id))
-        );
+        return moduleMapper.toDto(entityFinderService.getModuleOrThrow(id));
     }
 
     @Override
@@ -51,11 +49,9 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleDto addModule(ModuleDto moduleDto) {
         log.info("вызван addModule");
 
-        Track track = trackRepository.findById(moduleDto.trackId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.TRACK_NOT_FOUND, moduleDto.trackId())
-        );
-
+        Track track = entityFinderService.getTrackOrThrow(moduleDto.trackId());
         Module module = moduleMapper.toModel(moduleDto);
+
         module.setTrack(track);
 
         return moduleMapper.toDto(
@@ -72,13 +68,8 @@ public class ModuleServiceImpl implements ModuleService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Module module = moduleRepository.findById(moduleDto.id()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, moduleDto.id())
-        );
-
-        Track track = trackRepository.findById(moduleDto.trackId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.TRACK_NOT_FOUND, moduleDto.trackId())
-        );
+        Module module = entityFinderService.getModuleOrThrow(moduleDto.id());
+        Track track = entityFinderService.getTrackOrThrow(moduleDto.trackId());
 
         module.setName(moduleDto.name());
         module.setStartContent(moduleDto.startContent());
@@ -94,9 +85,9 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Transactional
     public void deleteModule(Long id) {
-        Module module = moduleRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.MODULE_NOT_FOUND, id)
-        );
+        log.info("вызван deleteModule, id = {}", id);
+
+        Module module = entityFinderService.getModuleOrThrow(id);
 
         moduleRepository.delete(module);
     }

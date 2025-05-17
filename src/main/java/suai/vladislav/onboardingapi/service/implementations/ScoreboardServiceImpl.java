@@ -11,7 +11,7 @@ import suai.vladislav.onboardingapi.mapper.ScoreboardMapper;
 import suai.vladislav.onboardingapi.model.Scoreboard;
 import suai.vladislav.onboardingapi.model.User;
 import suai.vladislav.onboardingapi.repository.ScoreboardRepository;
-import suai.vladislav.onboardingapi.repository.UserRepository;
+import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 import suai.vladislav.onboardingapi.service.interfaces.ScoreboardService;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class ScoreboardServiceImpl implements ScoreboardService {
 
     private final ScoreboardRepository scoreboardRepository;
 
-    private final UserRepository userRepository;
+    private final EntityFinderService entityFinderService;
 
     @Override
     public List<ScoreboardDto> getScoreboard() {
@@ -41,9 +41,7 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public ScoreboardDto getScoreboardById(Long id) {
         log.info("вызван getScoreboardById id = {}", id);
 
-        return scoreboardMapper.toDto(scoreboardRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id))
-        );
+        return scoreboardMapper.toDto(entityFinderService.getScoreboardOrThrow(id));
     }
 
     @Override
@@ -51,10 +49,7 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public ScoreboardDto addScoreboard(ScoreboardDto scoreboardDto) {
         log.info("вызван addScoreboard");
 
-        User user = userRepository.findById(scoreboardDto.userId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId())
-        );
-
+        User user = entityFinderService.getUserOrThrow(scoreboardDto.userId());
         Scoreboard scoreboard = scoreboardMapper.toModel(scoreboardDto);
 
         scoreboard.setScore(scoreboardDto.score());
@@ -73,13 +68,8 @@ public class ScoreboardServiceImpl implements ScoreboardService {
             throw new CommonOnboardingApiException(ErrorType.ID_IS_MISSING);
         }
 
-        Scoreboard scoreboard = scoreboardRepository.findById(scoreboardDto.id()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, scoreboardDto.id())
-        );
-
-        User user = userRepository.findById(scoreboardDto.userId()).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.USER_NOT_FOUND, scoreboardDto.userId())
-        );
+        Scoreboard scoreboard = entityFinderService.getScoreboardOrThrow(scoreboardDto.id());
+        User user = entityFinderService.getUserOrThrow(scoreboardDto.userId());
 
         scoreboard.setScore(scoreboardDto.score());
         scoreboard.setUser(user);
@@ -94,9 +84,7 @@ public class ScoreboardServiceImpl implements ScoreboardService {
     public void deleteScoreboard(Long id) {
         log.info("вызван deleteScoreboard");
 
-        Scoreboard scoreboard = scoreboardRepository.findById(id).orElseThrow(
-            () -> new CommonOnboardingApiException(ErrorType.SCOREBOARD_NOT_FOUND, id)
-        );
+        Scoreboard scoreboard = entityFinderService.getScoreboardOrThrow(id);
 
         scoreboardRepository.delete(scoreboard);
     }

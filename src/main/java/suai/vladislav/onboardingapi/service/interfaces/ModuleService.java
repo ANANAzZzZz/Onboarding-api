@@ -5,6 +5,7 @@ import suai.vladislav.onboardingapi.dto.ModuleDto;
 import java.util.List;
 
 public interface ModuleService {
+
     List<ModuleDto> getModules();
 
     ModuleDto getModuleById(Long id);
