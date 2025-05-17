@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onboarding-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: onboarding-api
+  template:
+    metadata:
+      labels:
+        app: onboarding-api
+    spec:
+      containers:
+        - name: onboarding-api
+          image: 158.160.38.125:8082/onboarding-api:BUILD_NUMBER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: onboarding-api-service
+  namespace: default
+spec:
+  selector:
+    app: onboarding-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
+  type: NodePort
