@@ -1,17 +1,19 @@
+@baseUrl = http://localhost:8080/api/v1
+
 ### REGISTER
-POST http://localhost:8080/api/v1/auth/register
+POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
   "firstname": "test",
   "lastname": "test",
-  "email": "test@mail.ru",
+  "email": "test3@mail.ru",
   "password": "111111"
 }
 
 
 ### AUTHENTICATE
-POST http://localhost:8080/api/v1/auth/authenticate
+POST {{baseUrl}}/auth/authenticate
 Content-Type: application/json
 
 {
@@ -21,20 +23,20 @@ Content-Type: application/json
 
 ### ----- AUTH TOKEN -----
 
-@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDczOTgzMjksImV4cCI6MTc0NzM5OTc2OX0.0HUT9TyXmVsPrrvJIZrnmSXPVK1Hji1ZRWDIjSkJjXs
+@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDc2NjIyNTcsImV4cCI6MTc0NzY2MzY5N30.y8_2mKFSlzN40XWpfb4E9Bob8VYs9va1E4HP_KhTtYM
 
 ### GET ALL PAGES
-GET http://localhost:8080/api/v1/page
+GET {{baseUrl}}/page
 Authorization: {{authToken}}
 
 
 ### GET PAGE BY ID
-GET http://localhost:8080/api/v1/page/1
+GET {{baseUrl}}/page/3
 Authorization: {{authToken}}
 
 
 ### ADD PAGE
-POST http://localhost:8080/api/v1/page
+POST {{baseUrl}}/page
 Authorization: {{authToken}}
 Content-Type: application/json
 
@@ -47,7 +49,7 @@ Content-Type: application/json
 
 
 ### UPDATE PAGE
-PUT http://localhost:8080/api/v1/page
+PUT {{baseUrl}}/page
 Authorization: {{authToken}}
 Content-Type: application/json
 
@@ -61,22 +63,22 @@ Content-Type: application/json
 
 
 ### DELETE PAGE
-DELETE http://localhost:8080/api/v1/page/1
+DELETE {{baseUrl}}/page/1
 Authorization: {{authToken}}
 
 
 ### GET ALL SCOREBOARDS
-GET http://localhost:8080/api/v1/scoreboard
+GET {{baseUrl}}/scoreboard
 Authorization: {{authToken}}
 
 
 ### GET SCOREBOARD BY ID
-GET http://localhost:8080/api/v1/scoreboard/1
+GET {{baseUrl}}/scoreboard/1
 Authorization: {{authToken}}
 
 
 ### ADD SCOREBOARD
-POST http://localhost:8080/api/v1/scoreboard
+POST {{baseUrl}}/scoreboard
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -87,7 +89,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE SCOREBOARD
-PUT http://localhost:8080/api/v1/scoreboard
+PUT {{baseUrl}}/scoreboard
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -99,22 +101,22 @@ Authorization: {{authToken}}
 
 
 ### DELETE SCOREBOARD BY ID
-DELETE http://localhost:8080/api/v1/scoreboard/1
+DELETE {{baseUrl}}/scoreboard/1
 Authorization: {{authToken}}
 
 
 ### GET KNOWLEDGEBASES
-GET http://localhost:8080/api/v1/knowledgebase
+GET {{baseUrl}}/knowledgebase
 Authorization: {{authToken}}
 
 
 ### GET KNOWLEDGEBASE BY ID
-GET http://localhost:8080/api/v1/knowledgebase/1
+GET {{baseUrl}}/knowledgebase/1
 Authorization: {{authToken}}
 
 
 ### ADD KNOWLEDGEBASE
-POST http://localhost:8080/api/v1/knowledgebase
+POST {{baseUrl}}/knowledgebase
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -125,7 +127,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE KNOWLEDGEBASE
-PUT http://localhost:8080/api/v1/knowledgebase
+PUT {{baseUrl}}/knowledgebase
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -137,23 +139,23 @@ Authorization: {{authToken}}
 
 
 ### DELETE KNOWLEDGEBASE BY ID
-DELETE http://localhost:8080/api/v1/knowledgebase/3
+DELETE {{baseUrl}}/knowledgebase/3
 Content-Type: application/json
 Authorization: {{authToken}}
 
 
 ### GET ALL SURVEYS
-GET http://localhost:8080/api/v1/survey
+GET {{baseUrl}}/survey
 Authorization: {{authToken}}
 
 
 ### GET SURVEY BY ID
-GET http://localhost:8080/api/v1/survey/2
+GET {{baseUrl}}/survey/2
 Authorization: {{authToken}}
 
 
 ### ADD SURVEY
-POST http://localhost:8080/api/v1/survey
+POST {{baseUrl}}/survey
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -164,7 +166,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE SURVEY
-PUT http://localhost:8080/api/v1/survey
+PUT {{baseUrl}}/survey
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -176,37 +178,37 @@ Authorization: {{authToken}}
 
 
 ### DELETE SURVEY
-DELETE http://localhost:8080/api/v1/survey/6
+DELETE {{baseUrl}}/survey/6
 Content-Type: application/json
 Authorization: {{authToken}}
 
 
 ### GET ALL USERS FOR SURVEY BY ID
-GET http://localhost:8080/api/v1/surveys/2/users
+GET {{baseUrl}}/surveys/2/users
 Authorization: {{authToken}}
 
 
 ### ADD USER TO SURVEY
-POST http://localhost:8080/api/v1/surveys/2/users/1
+POST {{baseUrl}}/surveys/2/users/1
 Authorization: {{authToken}}
 
 
 ### DELETE USER FROM SURVEY
-DELETE http://localhost:8080/api/v1/surveys/2/users/1
+DELETE {{baseUrl}}/surveys/2/users/1
 Authorization: {{authToken}}
 
 
 ### GET ALL USERS-PROGRESES-IN-MODULES
-GET http://localhost:8080/api/v1/user-progress-in-module
+GET {{baseUrl}}/user-progress-in-module
 Authorization: {{authToken}}
 
 ### GET USER-PROGRESS-IN-MODULE BY ID
-GET http://localhost:8080/api/v1/user-progress-in-module/4
+GET {{baseUrl}}/user-progress-in-module/4
 Authorization: {{authToken}}
 
 
 ### ADD USER-PROGRESS-IN-MODULE
-POST http://localhost:8080/api/v1/user-progress-in-module
+POST {{baseUrl}}/user-progress-in-module
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -219,7 +221,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE USER-PROGRESS-IN-MODULE
-PUT http://localhost:8080/api/v1/user-progress-in-module
+PUT {{baseUrl}}/user-progress-in-module
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -233,22 +235,22 @@ Authorization: {{authToken}}
 
 
 ### DELTE USER-PROGRESS-IN-MODULE
-DELETE http://localhost:8080/api/v1/user-progress-in-module/5
+DELETE {{baseUrl}}/user-progress-in-module/5
 Authorization: {{authToken}}
 
 
 ### GET ALL MODULES
-GET http://localhost:8080/api/v1/module
+GET {{baseUrl}}/module
 Content-Type: application/json
 Authorization: {{authToken}}
 
 
 ### GET MODULE BY ID
-GET http://localhost:8080/api/v1/module/1
+GET {{baseUrl}}/module/1
 Authorization: {{authToken}}
 
 ### ADD MODULE
-POST http://localhost:8080/api/v1/module
+POST {{baseUrl}}/module
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -263,7 +265,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE MODULE
-PUT http://localhost:8080/api/v1/module
+PUT {{baseUrl}}/module
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -277,13 +279,13 @@ Authorization: {{authToken}}
 }
 
 ### GET ALL TRACKS
-GET http://localhost:8080/api/v1/track
+GET {{baseUrl}}/track
 Content-Type: application/json
 Authorization: {{authToken}}
 
 
 ### ADD TRACK
-POST http://localhost:8080/api/v1/track
+POST {{baseUrl}}/track
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -293,7 +295,7 @@ Authorization: {{authToken}}
 
 
 ### UPDATE TRACK
-PUT http://localhost:8080/api/v1/track
+PUT {{baseUrl}}/track
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -304,5 +306,122 @@ Authorization: {{authToken}}
 
 
 ### DELETE TRACK
-DELETE http://localhost:8080/api/v1/track/3
+DELETE {{baseUrl}}/track/3
+Authorization: {{authToken}}
+
+
+### 1. Создание новой ачивки для завершения модуля
+POST {{baseUrl}}/achievement
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "name": "Первые шаги",
+  "description": "Завершите первый модуль обучения",
+  "picture": "achievement_first_steps.jpg",
+  "actionType": "COMPLETE_MODULE",
+  "condition": "{\"moduleId\": 1}",
+  "pointsReward": 50
+}
+
+### 2. Создание ачивки за набор определенного количества очков
+POST {{baseUrl}}/achievement
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "name": "Начинающий ученик",
+  "description": "Накопите 100 очков в системе",
+  "picture": "achievement_100_points.jpg",
+  "actionType": "SCORE_THRESHOLD",
+  "condition": "{\"minScore\": 100}",
+  "pointsReward": 20
+}
+
+### 3. Создание ачивки за серию дней активности
+POST {{baseUrl}}/achievement
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "name": "Недельная активность",
+  "description": "Занимайтесь 7 дней подряд",
+  "picture": "achievement_week_streak.jpg",
+  "actionType": "DAYS_STREAK",
+  "condition": "{\"minDays\": 7}",
+  "pointsReward": 100
+}
+
+### 4. Получение списка всех ачивок
+GET {{baseUrl}}/achievement
+Authorization: {{authToken}}
+
+
+### 5. Получение конкретной ачивки по ID
+# После выполнения запроса на создание ачивки, получите ID из ответа
+# и подставьте в этот запрос
+GET {{baseUrl}}/achievement/1
+Authorization: {{authToken}}
+
+
+### 6. Имитация действия - завершение модуля
+POST {{baseUrl}}/achievement/action
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "userId": 1,
+  "actionType": "COMPLETE_MODULE",
+  "metadata": {
+    "moduleId": 1
+  }
+}
+
+### 7. Имитация действия - проверка накопленных очков
+POST {{baseUrl}}/achievement/action
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "userId": 1,
+  "actionType": "SCORE_THRESHOLD"
+}
+
+### 8. Имитация действия - серия дней активности
+POST {{baseUrl}}/achievement/action
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "userId": 1,
+  "actionType": "DAYS_STREAK",
+  "metadata": {
+    "daysStreak": 7
+  }
+}
+
+### 9. Получение списка ачивок конкретного пользователя
+GET {{baseUrl}}/achievement/user/1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+### 10. Обновление существующей ачивки
+# Подставьте актуальный ID ачивки
+PUT {{baseUrl}}/achievement
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 1,
+  "name": "Первые шаги (обновлено)",
+  "description": "Завершите первый модуль обучения, чтобы начать свой путь!",
+  "picture": "achievement_first_steps_v2.jpg",
+  "actionType": "COMPLETE_MODULE",
+  "condition": "{\"moduleId\": 1}",
+  "pointsReward": 75
+}
+
+### 11. Удаление ачивки
+# Подставьте актуальный ID ачивки
+DELETE {{baseUrl}}/achievement/3
 Authorization: {{authToken}}
