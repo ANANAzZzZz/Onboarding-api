@@ -17,8 +17,10 @@ public enum ErrorType {
     PAGE_NOT_FOUND("Страница не найдена, id=%s", HttpStatus.NOT_FOUND),
     USER_PROGRESS_IN_MODULE_NOT_FOUND("Прогресс пользователя в модуле не найден, id=%s", HttpStatus.NOT_FOUND),
 
-    ALREADY_EXISTS("Сущность уже существует, id=%s", HttpStatus.CONFLICT),
+    USER_ALREADY_EXISTS("Пользователь уже существует, email=%s", HttpStatus.CONFLICT),
+
     WRONG_CREDENTIALS("Неверный логин или пароль", HttpStatus.UNAUTHORIZED),
+
     ID_IS_MISSING("Не передан id сущности", HttpStatus.BAD_REQUEST);
 
     private final String message;

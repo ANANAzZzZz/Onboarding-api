@@ -8,19 +8,29 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import suai.vladislav.onboardingapi.config.JwtService;
+import suai.vladislav.onboardingapi.enums.ErrorType;
 import suai.vladislav.onboardingapi.enums.Role;
+import suai.vladislav.onboardingapi.exception.CommonOnboardingApiException;
 import suai.vladislav.onboardingapi.model.User;
 import suai.vladislav.onboardingapi.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
     private final UserRepository repository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtService jwtService;
+
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new CommonOnboardingApiException(ErrorType.USER_ALREADY_EXISTS, request.getEmail());
+        }
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -28,8 +38,11 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
+
         repository.save(user);
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
@@ -48,9 +61,12 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
+
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
@@ -66,11 +82,14 @@ public class AuthenticationService {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
+
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
+
         var user = repository.findByEmail(userEmail)
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
