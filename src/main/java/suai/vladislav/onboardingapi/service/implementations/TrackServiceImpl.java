@@ -22,9 +22,7 @@ import java.util.List;
 public class TrackServiceImpl implements TrackService {
 
     private final TrackRepository trackRepository;
-
     private final TrackMapper trackMapper;
-
     private final EntityFinderService entityFinderService;
 
     @Override

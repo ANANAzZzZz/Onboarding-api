@@ -1,5 +1,6 @@
 package suai.vladislav.onboardingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Page")
@@ -17,7 +21,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Page extends BaseModel {
+public class Page extends BaseModel implements Serializable {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -29,5 +33,6 @@ public class Page extends BaseModel {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "moduleId")
+    @JsonBackReference("module-page")
     private Module module;
 }

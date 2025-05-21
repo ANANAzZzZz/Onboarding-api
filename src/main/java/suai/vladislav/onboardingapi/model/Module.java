@@ -1,6 +1,7 @@
 package suai.vladislav.onboardingapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,8 +41,10 @@ public class Module extends BaseModel {
     private Track track;
 
     @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
+    @JsonManagedReference("module-page")
     private List<Page> pages;
 
     @OneToMany(mappedBy = "module", fetch = FetchType.LAZY)
+    @JsonManagedReference("module-user-progress")
     private List<UserProgressInModule> userProgressInModules;
 }

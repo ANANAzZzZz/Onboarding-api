@@ -1,5 +1,6 @@
 package suai.vladislav.onboardingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,5 +24,6 @@ public class Scoreboard extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @JsonBackReference("user-scoreboard")
     private User user;
 }

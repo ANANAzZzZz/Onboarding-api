@@ -24,9 +24,7 @@ import java.util.List;
 public class UserProgressInModuleServiceImpl implements UserProgressInModuleService {
 
     private final UserProgressInModuleRepository userProgressInModuleRepository;
-
     private final UserProgressInModuleMapper userProgressInModuleMapper;
-
     private final EntityFinderService entityFinderService;
 
     @Override

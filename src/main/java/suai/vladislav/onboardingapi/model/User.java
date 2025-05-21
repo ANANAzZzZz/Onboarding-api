@@ -1,5 +1,7 @@
 package suai.vladislav.onboardingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +15,9 @@ import suai.vladislav.onboardingapi.enums.Role;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "_User")
@@ -41,13 +45,16 @@ public class User extends BaseModel implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference("user-scoreboard")
     private List<Scoreboard> scoreboards;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference("user-progress-module")
     private List<UserProgressInModule> userProgressInModules;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<Survey> surveys;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Survey> surveys = new HashSet<>();
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Achievement> achievements;

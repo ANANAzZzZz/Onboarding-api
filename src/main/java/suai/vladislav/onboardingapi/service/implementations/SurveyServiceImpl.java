@@ -22,9 +22,7 @@ import java.util.List;
 public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
-
     private final SurveyMapper surveyMapper;
-
     private final EntityFinderService entityFinderService;
 
     @Override
