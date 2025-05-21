@@ -22,9 +22,7 @@ import java.util.List;
 public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
 
     private final KnowledgeBaseRepository knowledgeBaseRepository;
-
     private final KnowledgeBaseMapper knowledgeBaseMapper;
-
     private final EntityFinderService entityFinderService;
 
     @Override

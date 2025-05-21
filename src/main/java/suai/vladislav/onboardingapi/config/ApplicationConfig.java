@@ -1,5 +1,8 @@
 package suai.vladislav.onboardingapi.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +21,11 @@ import suai.vladislav.onboardingapi.repository.UserRepository;
 public class ApplicationConfig {
 
     private final UserRepository repository;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+            .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Bean

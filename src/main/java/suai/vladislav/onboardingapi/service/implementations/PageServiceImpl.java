@@ -2,6 +2,9 @@ package suai.vladislav.onboardingapi.service.implementations;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import suai.vladislav.onboardingapi.dto.PageDto;
@@ -23,12 +26,11 @@ import java.util.List;
 public class PageServiceImpl implements PageService {
 
     private final PageRepository pageRepository;
-
     private final PageMapper pageMapper;
-
     private final EntityFinderService entityFinderService;
 
     @Override
+    @Cacheable(value = "allPages")
     public List<PageDto> getPages() {
         log.info("вызван getPages");
 
@@ -38,6 +40,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
+    @Cacheable(value = "pageById", key = "#id")
     public PageDto getPageById(Long id) {
         log.info("вызван getPageById, id = {}", id);
 
@@ -46,6 +49,9 @@ public class PageServiceImpl implements PageService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "allPages", allEntries = true)
+    })
     public PageDto addPage(PageDto pageDto) {
         log.info("вызван addPage");
 
@@ -62,6 +68,11 @@ public class PageServiceImpl implements PageService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "allPages", allEntries = true),
+        @CacheEvict(value = "pageById", key = "#pageDto.id()"),
+        @CacheEvict(value = "findEntityById", key = "'page_' + #pageDto.id()")
+    })
     public PageDto updatePage(PageDto pageDto) {
         log.info("вызван updatePage");
 
@@ -84,6 +95,11 @@ public class PageServiceImpl implements PageService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "allPages", allEntries = true),
+        @CacheEvict(value = "pageById", key = "#id"),
+        @CacheEvict(value = "findEntityById", key = "'page_' + #id")
+    })
     public void deletePage(Long id) {
         Page page = entityFinderService.getPageOrThrow(id);
 

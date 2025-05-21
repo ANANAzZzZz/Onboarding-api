@@ -1,5 +1,7 @@
 package suai.vladislav.onboardingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,12 +31,13 @@ public class Survey extends BaseModel {
     private String content;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinTable(
         name = "SurveyXUser",
         joinColumns = @JoinColumn(name = "surveyId"),
         inverseJoinColumns = @JoinColumn(name = "userId")
     )
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public void assignUser(User user) {
         this.users.add(user);

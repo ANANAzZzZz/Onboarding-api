@@ -21,7 +21,6 @@ import java.util.List;
 public class SurveyXUsersServiceImpl implements SurveyXUserService {
 
     private final SurveyRepository surveyRepository;
-
     private final EntityFinderService entityFinderService;
 
     @Override

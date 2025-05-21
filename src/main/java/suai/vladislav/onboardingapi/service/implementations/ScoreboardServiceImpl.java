@@ -23,9 +23,7 @@ import java.util.List;
 public class ScoreboardServiceImpl implements ScoreboardService {
 
     private final ScoreboardMapper scoreboardMapper;
-
     private final ScoreboardRepository scoreboardRepository;
-
     private final EntityFinderService entityFinderService;
 
     @Override

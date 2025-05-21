@@ -1,3 +1,4 @@
+
 version: '3.7'
 
 services:
@@ -27,5 +28,26 @@ services:
       monitoring:
         aliases:
           - prometheus
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      monitoring:
+        aliases:
+          - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 networks:
   monitoring:
+
+volumes:
+  redis-data:  # Том для хранения данных Redis

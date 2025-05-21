@@ -19,10 +19,18 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+  cache:
+    type:
+      redis
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:password}
+      timeout: 2000
+      connect-timeout: 2000
 logging:
   config: classpath:logback.xml
-
 management:
   endpoints:
     web:

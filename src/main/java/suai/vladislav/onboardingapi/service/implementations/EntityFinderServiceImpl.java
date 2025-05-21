@@ -1,6 +1,7 @@
 package suai.vladislav.onboardingapi.service.implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import suai.vladislav.onboardingapi.enums.ErrorType;
 import suai.vladislav.onboardingapi.exception.CommonOnboardingApiException;
@@ -27,19 +28,12 @@ import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 public class EntityFinderServiceImpl implements EntityFinderService {
 
     private final UserRepository userRepository;
-
     private final ModuleRepository moduleRepository;
-
     private final PageRepository pageRepository;
-
     private final SurveyRepository surveyRepository;
-
     private final TrackRepository trackRepository;
-
     private final ScoreboardRepository scoreboardRepository;
-
     private final UserProgressInModuleRepository userProgressInModuleRepository;
-
     private final KnowledgeBaseRepository knowledgeBaseRepository;
 
     @Override
@@ -55,6 +49,7 @@ public class EntityFinderServiceImpl implements EntityFinderService {
     }
 
     @Override
+    @Cacheable(value = "findEntityById", key = "'page_' + #id")
     public Page getPageOrThrow(Long id) {
         return pageRepository.findById(id)
             .orElseThrow(() -> new CommonOnboardingApiException(ErrorType.PAGE_NOT_FOUND, id));

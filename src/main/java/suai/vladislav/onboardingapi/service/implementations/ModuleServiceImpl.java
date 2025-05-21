@@ -23,9 +23,7 @@ import java.util.List;
 public class ModuleServiceImpl implements ModuleService {
 
     private final ModuleMapper moduleMapper;
-
     private final ModuleRepository moduleRepository;
-
     private final EntityFinderService entityFinderService;
 
     @Override
