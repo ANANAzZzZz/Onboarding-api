@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "_User")
@@ -49,8 +50,13 @@ public class User extends BaseModel implements UserDetails {
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Survey> surveys;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<Achievement> achievements;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "AchievementXUser",
+        joinColumns = @JoinColumn(name = "UserId"),
+        inverseJoinColumns = @JoinColumn(name = "AchievementId")
+    )
+    private Set<Achievement> achievements;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -85,5 +91,13 @@ public class User extends BaseModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addAchievement(Achievement achievement) {
+        this.achievements.add(achievement);
+    }
+
+    public void removeAchievement(Achievement achievement) {
+        this.achievements.remove(achievement);
     }
 }

@@ -43,11 +43,6 @@ public class Achievement extends BaseModel {
     @Column(nullable = false)
     private Integer pointsReward;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "AchievementXUser",
-        joinColumns = @JoinColumn(name = "AchievementId"),
-        inverseJoinColumns = @JoinColumn(name = "UserId")
-    )
+    @ManyToMany(mappedBy = "achievements")
     private List<User> users;
 }

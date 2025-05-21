@@ -18,12 +18,14 @@ import suai.vladislav.onboardingapi.model.Scoreboard;
 import suai.vladislav.onboardingapi.model.User;
 import suai.vladislav.onboardingapi.repository.AchievementRepository;
 import suai.vladislav.onboardingapi.repository.ScoreboardRepository;
+import suai.vladislav.onboardingapi.repository.UserRepository;
 import suai.vladislav.onboardingapi.service.interfaces.AchievementService;
 import suai.vladislav.onboardingapi.service.interfaces.EntityFinderService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class AchievementServiceImpl implements AchievementService {
     private final EntityFinderService entityFinderService;
     private final ScoreboardRepository scoreboardRepository;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
     @Override
     public List<AchievementDto> getAllAchievements() {
@@ -106,33 +109,26 @@ public class AchievementServiceImpl implements AchievementService {
         log.info("Вызван processUserAction, userId = {}, actionType = {}",
             userActionDto.userId(), userActionDto.actionType());
 
-        // Получаем пользователя
         User user = entityFinderService.getUserOrThrow(userActionDto.userId());
 
-        // Находим все ачивки, соответствующие типу действия
         List<Achievement> potentialAchievements = achievementRepository.findByActionType(userActionDto.actionType());
 
         List<AchievementNotificationDto> newAchievements = new ArrayList<>();
 
-        // Проверяем каждую ачивку
+        Set<Achievement> userAchievements = user.getAchievements();
+
         for (Achievement achievement : potentialAchievements) {
-            // Пропускаем, если пользователь уже имеет эту ачивку
-            if (user.getAchievements() != null && user.getAchievements().contains(achievement)) {
+            if (userAchievements != null && userAchievements.contains(achievement)) {
                 continue;
             }
 
-            // Проверяем условие ачивки
             if (checkAchievementCondition(achievement, userActionDto)) {
-                // Присваиваем ачивку пользователю
-                if (user.getAchievements() == null) {
-                    user.setAchievements(new ArrayList<>());
-                }
-                user.getAchievements().add(achievement);
+                user.addAchievement(achievement);
 
-                // Добавляем очки пользователю
+                userRepository.save(user);
+
                 updateUserScore(user, achievement.getPointsReward());
 
-                // Добавляем уведомление о новой ачивке
                 newAchievements.add(AchievementNotificationDto.builder()
                     .userId(user.getId())
                     .achievementId(achievement.getId())
@@ -143,7 +139,6 @@ public class AchievementServiceImpl implements AchievementService {
                     .build());
             }
         }
-
         return newAchievements;
     }
 
@@ -244,7 +239,7 @@ public class AchievementServiceImpl implements AchievementService {
         Integer minScore = condition.get("minScore").asInt();
 
         // Находим очки пользователя
-        List<Scoreboard> userScoreboards = scoreboardRepository.findByUserId(userId);
+        List<Scoreboard> userScoreboards = scoreboardRepository.findListByUserId(userId);
         int totalScore = userScoreboards.stream()
             .mapToInt(Scoreboard::getScore)
             .sum();
@@ -269,7 +264,7 @@ public class AchievementServiceImpl implements AchievementService {
     @Transactional
     public void updateUserScore(User user, Integer points) {
         // Находим последнюю запись в scoreboard или создаем новую
-        Scoreboard scoreboard = scoreboardRepository.findTopByUserIdOrderByIdDesc(user.getId())
+        Scoreboard scoreboard = scoreboardRepository.findByUserId(user.getId())
             .orElseGet(() -> {
                 Scoreboard newScoreboard = new Scoreboard();
                 newScoreboard.setUser(user);

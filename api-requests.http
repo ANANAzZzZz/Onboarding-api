@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ### ----- AUTH TOKEN -----
 
-@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDc2NjIyNTcsImV4cCI6MTc0NzY2MzY5N30.y8_2mKFSlzN40XWpfb4E9Bob8VYs9va1E4HP_KhTtYM
+@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDc4MTE0NzEsImV4cCI6MTc0NzgxMjkxMX0.cWGiQVVDMZMZvYSksw6zjoOvK-VsgsgYc2AYgN4r4RY
 
 ### GET ALL PAGES
 GET {{baseUrl}}/page
@@ -278,6 +278,7 @@ Authorization: {{authToken}}
   "trackId": 1
 }
 
+
 ### GET ALL TRACKS
 GET {{baseUrl}}/track
 Content-Type: application/json
@@ -310,7 +311,7 @@ DELETE {{baseUrl}}/track/3
 Authorization: {{authToken}}
 
 
-### 1. Создание новой ачивки для завершения модуля
+### CREATE ACHIEVEMENT FOR FINISHING MODULE
 POST {{baseUrl}}/achievement
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -324,7 +325,8 @@ Authorization: {{authToken}}
   "pointsReward": 50
 }
 
-### 2. Создание ачивки за набор определенного количества очков
+
+### CREATE ACHIEVEMENT FOR FIRST 100 SCORED POINTS
 POST {{baseUrl}}/achievement
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -338,7 +340,8 @@ Authorization: {{authToken}}
   "pointsReward": 20
 }
 
-### 3. Создание ачивки за серию дней активности
+
+### CREATE ACHIEVEMENT FOR 7 DAYS LOGIN STREAK
 POST {{baseUrl}}/achievement
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -352,19 +355,20 @@ Authorization: {{authToken}}
   "pointsReward": 100
 }
 
-### 4. Получение списка всех ачивок
+
+### GET ALL ACHIEVEMENTS
 GET {{baseUrl}}/achievement
 Authorization: {{authToken}}
 
 
-### 5. Получение конкретной ачивки по ID
+### GET ACHIEVEMENT BY ID
 # После выполнения запроса на создание ачивки, получите ID из ответа
 # и подставьте в этот запрос
-GET {{baseUrl}}/achievement/1
+GET {{baseUrl}}/achievement/3
 Authorization: {{authToken}}
 
 
-### 6. Имитация действия - завершение модуля
+### ACTION: COMPLETE MODULE
 POST {{baseUrl}}/achievement/action
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -377,7 +381,8 @@ Authorization: {{authToken}}
   }
 }
 
-### 7. Имитация действия - проверка накопленных очков
+
+### ACTION: SCORE_THRESHOLD
 POST {{baseUrl}}/achievement/action
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -387,7 +392,8 @@ Authorization: {{authToken}}
   "actionType": "SCORE_THRESHOLD"
 }
 
-### 8. Имитация действия - серия дней активности
+
+### ACTION: 7 DAYS LOGIN STREAK
 POST {{baseUrl}}/achievement/action
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -400,13 +406,14 @@ Authorization: {{authToken}}
   }
 }
 
-### 9. Получение списка ачивок конкретного пользователя
+
+### GET ALL ACHIEVEMENTS
 GET {{baseUrl}}/achievement/user/1
 Content-Type: application/json
 Authorization: {{authToken}}
 
-### 10. Обновление существующей ачивки
-# Подставьте актуальный ID ачивки
+
+### UPDATE ACHIEVEMET
 PUT {{baseUrl}}/achievement
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -421,7 +428,7 @@ Authorization: {{authToken}}
   "pointsReward": 75
 }
 
-### 11. Удаление ачивки
-# Подставьте актуальный ID ачивки
+
+### DELETE ACHIEVEMENT
 DELETE {{baseUrl}}/achievement/3
 Authorization: {{authToken}}

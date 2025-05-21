@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ScoreboardRepository extends JpaRepository<Scoreboard, Long> {
-    List<Scoreboard> findByUserId(Long userId);
+    List<Scoreboard> findListByUserId(Long userId);
 
-    Optional<Scoreboard> findTopByUserIdOrderByIdDesc(Long userId);
+    Optional<Scoreboard> findByUserId(Long userId);
 }
