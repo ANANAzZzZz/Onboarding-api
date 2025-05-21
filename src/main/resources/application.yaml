@@ -36,3 +36,12 @@ management:
     metrics:
       export:
         enabled: true
+backup:
+  path: ./backups
+  pg:
+    dump-path: ${PG_DUMP_PATH:C:/Program Files/PostgreSQL/17/bin/pg_dump.exe}
+    host: ep-muddy-mountain-a49jffvc-pooler.us-east-1.aws.neon.tech
+    port: 5432
+    dbname: onboarding-api
+    username: ${DB_USERNAME:neondb_owner}
+    password: ${DB_PASSWORD:npg_OQ4NUEJr5bxu}
