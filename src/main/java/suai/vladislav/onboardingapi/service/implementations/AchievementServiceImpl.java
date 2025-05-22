@@ -237,7 +237,6 @@ public class AchievementServiceImpl implements AchievementService {
 
         int minScore = condition.get("minScore").asInt();
 
-        // Находим очки пользователя
         List<Scoreboard> userScoreboards = scoreboardRepository.findListByUserId(userId);
         int totalScore = userScoreboards.stream()
             .mapToInt(Scoreboard::getScore)
@@ -262,7 +261,6 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Transactional
     public void updateUserScore(User user, Integer points) {
-        // Находим последнюю запись в scoreboard или создаем новую
         Scoreboard scoreboard = scoreboardRepository.findByUserId(user.getId())
             .orElseGet(() -> {
                 Scoreboard newScoreboard = new Scoreboard();
@@ -271,10 +269,8 @@ public class AchievementServiceImpl implements AchievementService {
                 return newScoreboard;
             });
 
-        // Обновляем очки
         scoreboard.setScore(scoreboard.getScore() + points);
 
-        // Сохраняем
         scoreboardRepository.save(scoreboard);
     }
 }
