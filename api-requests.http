@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ### ----- AUTH TOKEN -----
 
-@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDc4MTE0NzEsImV4cCI6MTc0NzgxMjkxMX0.cWGiQVVDMZMZvYSksw6zjoOvK-VsgsgYc2AYgN4r4RY
+@authToken = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJpYXQiOjE3NDc5MjUxNDcsImV4cCI6MTc0NzkyNjU4N30.ZGclVfk5izFe-cT2A5eSYy9L2sKs1Lu7_t0fdt3SpX4
 
 ### GET ALL PAGES
 GET {{baseUrl}}/page
@@ -73,7 +73,7 @@ Authorization: {{authToken}}
 
 
 ### GET SCOREBOARD BY ID
-GET {{baseUrl}}/scoreboard/1
+GET {{baseUrl}}/scoreboard/2
 Authorization: {{authToken}}
 
 
@@ -284,6 +284,10 @@ GET {{baseUrl}}/track
 Content-Type: application/json
 Authorization: {{authToken}}
 
+
+### GET TRACK BY ID
+GET {{baseUrl}}/track/1
+Authorization: {{authToken}}
 
 ### ADD TRACK
 POST {{baseUrl}}/track

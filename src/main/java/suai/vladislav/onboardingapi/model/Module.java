@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Module")
@@ -35,14 +36,14 @@ public class Module extends BaseModel {
     @Column(nullable = false)
     private Integer orderInTrack;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference(value = "module-track")
     @JoinColumn(name = "trackId")
     private Track track;
 
-    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "module", fetch = FetchType.LAZY)
     @JsonManagedReference("module-page")
-    private List<Page> pages;
+    private Set<Page> pages;
 
     @OneToMany(mappedBy = "module", fetch = FetchType.LAZY)
     @JsonManagedReference("module-user-progress")

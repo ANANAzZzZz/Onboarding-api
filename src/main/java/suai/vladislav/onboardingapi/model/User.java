@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import suai.vladislav.onboardingapi.enums.Role;
@@ -26,7 +27,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public class User extends BaseModel implements UserDetails {
 
     @Column(nullable = false)
@@ -39,6 +41,7 @@ public class User extends BaseModel implements UserDetails {
     private String password;
 
     @Column(nullable = false)
+    @ToString.Include
     private String email;
 
     @Enumerated(EnumType.STRING)

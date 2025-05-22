@@ -31,7 +31,7 @@ public class Page extends BaseModel implements Serializable {
     @Column(nullable = false)
     private Integer orderInModule;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moduleId")
     @JsonBackReference("module-page")
     private Module module;

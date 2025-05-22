@@ -24,6 +24,7 @@ public class SurveyXUsersServiceImpl implements SurveyXUserService {
     private final EntityFinderService entityFinderService;
 
     @Override
+    @Transactional
     public List<SecureUserDto> getUsersForSurvey(Long surveyId) {
         log.info("вызван getUsersForSurvey");
 

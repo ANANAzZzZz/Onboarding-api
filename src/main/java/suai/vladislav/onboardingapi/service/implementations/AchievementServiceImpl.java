@@ -167,7 +167,6 @@ public class AchievementServiceImpl implements AchievementService {
                 case DAYS_STREAK -> checkDaysStreak(conditionNode, metadata);
                 case SCORE_THRESHOLD -> checkScoreThreshold(conditionNode, userActionDto.userId());
                 case KNOWLEDGE_BASE_READ -> checkKnowledgeBaseRead(conditionNode, metadata);
-                default -> false;
             };
         } catch (Exception e) {
             log.error("Ошибка при проверке условия ачивки", e);
@@ -222,7 +221,7 @@ public class AchievementServiceImpl implements AchievementService {
             return false;
         }
 
-        Integer daysStreak = Integer.valueOf(metadata.get("daysStreak").toString());
+        int daysStreak = Integer.parseInt(metadata.get("daysStreak").toString());
 
         if (condition.has("minDays")) {
             return daysStreak >= condition.get("minDays").asInt();
@@ -236,7 +235,7 @@ public class AchievementServiceImpl implements AchievementService {
             return false;
         }
 
-        Integer minScore = condition.get("minScore").asInt();
+        int minScore = condition.get("minScore").asInt();
 
         // Находим очки пользователя
         List<Scoreboard> userScoreboards = scoreboardRepository.findListByUserId(userId);
