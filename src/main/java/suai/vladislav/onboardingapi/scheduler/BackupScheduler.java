@@ -1,4 +1,4 @@
-package suai.vladislav.onboardingapi.schedulers;
+package suai.vladislav.onboardingapi.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

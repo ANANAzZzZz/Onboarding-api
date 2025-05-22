@@ -7,4 +7,6 @@ Backend часть приложения дипломного проекта "О�
 * Spring boot
 * Spring data JPA
 * Postgresql
-
+* Grafana & Prometheus
+* Docker compose
+* Redis
