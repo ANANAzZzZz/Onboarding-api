@@ -56,8 +56,13 @@ public class User extends BaseModel implements UserDetails {
     @JsonIgnore
     private Set<Survey> surveys = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<Achievement> achievements;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "AchievementXUser",
+        joinColumns = @JoinColumn(name = "UserId"),
+        inverseJoinColumns = @JoinColumn(name = "AchievementId")
+    )
+    private Set<Achievement> achievements;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -92,5 +97,13 @@ public class User extends BaseModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addAchievement(Achievement achievement) {
+        this.achievements.add(achievement);
+    }
+
+    public void removeAchievement(Achievement achievement) {
+        this.achievements.remove(achievement);
     }
 }
