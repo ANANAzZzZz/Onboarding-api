@@ -48,6 +48,11 @@ public class ScoreboardServiceImpl implements ScoreboardService {
         log.info("вызван addScoreboard");
 
         User user = entityFinderService.getUserOrThrow(scoreboardDto.userId());
+
+        if (scoreboardRepository.findByUserId(user.getId()).isPresent()) {
+            throw new CommonOnboardingApiException(ErrorType.SCOREBOARD_ALREADY_EXISTS, user.getId());
+        }
+
         Scoreboard scoreboard = scoreboardMapper.toModel(scoreboardDto);
 
         scoreboard.setScore(scoreboardDto.score());

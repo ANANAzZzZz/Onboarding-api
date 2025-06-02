@@ -21,6 +21,8 @@ public enum ErrorType {
     INVALID_ACHIEVEMENT_CONDITION("Неверный формат условия для Достижения", HttpStatus.BAD_REQUEST),
 
     USER_ALREADY_EXISTS("Пользователь уже существует, email=%s", HttpStatus.CONFLICT),
+    SCOREBOARD_ALREADY_EXISTS("Таблица счцета с таким пользователем уже существует, userId=%s",
+        HttpStatus.CONFLICT),
 
     WRONG_CREDENTIALS("Неверный логин или пароль", HttpStatus.UNAUTHORIZED),
 
